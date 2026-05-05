@@ -1,1 +1,1 @@
-precisa comecar
+npm install @angular/cli@12
