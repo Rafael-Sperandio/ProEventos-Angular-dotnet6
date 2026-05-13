@@ -1,1 +1,9 @@
-npm install @angular/cli@12
+
+npm install -g @angular/cli@12
+ng new ProEventos-App
+npm install --save @fortawesome/fontawesome-free
+npm install @ngx-bootstrap@10 --save
+//versão ng-10 para angular 12
+//https://valor-software.com/ngx-bootstrap/old/12.0.0/#/documentation
+npm install bootstrap@4.6.0 --save
+npm install ngx-bootstrap@7.1.0 --save

@@ -391,7 +391,7 @@ FodyWeavers.xsd
 *.code-workspace
 
 # Local History for Visual Studio Code
-.history/
+.history/*
 
 # Windows Installer files from build outputs
 *.cab
@@ -482,3 +482,40 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db

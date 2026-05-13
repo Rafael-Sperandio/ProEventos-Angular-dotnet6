@@ -16,6 +16,7 @@ namespace ProEventos.API
                 context => context.UseSqlite(connection)
                 );
             builder.Services.AddControllers();
+            builder.Services.AddCors();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pokedex.API", Version = "v1" });
@@ -38,6 +39,9 @@ namespace ProEventos.API
 
             app.UseAuthorization();
 
+            app.UseCors(cors => cors.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin());
 
             app.MapControllers();
 
