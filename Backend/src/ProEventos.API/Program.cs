@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using ProEventos.API.Data;
+using ProEventos.Application.Services;
+using ProEventos.Application.Services.Interfaces;
+using ProEventos.Persistence.Contexts;
+using ProEventos.Persistence.Repository;
+using ProEventos.Persistence.Repository.Interfaces;
 
 namespace ProEventos.API
 {
@@ -12,10 +16,16 @@ namespace ProEventos.API
             
             var connection = builder.Configuration.GetConnectionString("SqlLiteConnection");
             // Add services to the container.
-            builder.Services.AddDbContext<DataContext>(
+            builder.Services.AddDbContext<ProEventosContext>(
                 context => context.UseSqlite(connection)
                 );
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(config => config.SerializerSettings.ReferenceLoopHandling 
+                    = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+            builder.Services.AddScoped<IEventoService, EventoService>();
+            builder.Services.AddScoped<IGeralPersist, GeralPersist>();
+            builder.Services.AddScoped<IEventoPersist, EventoPersist>();
             builder.Services.AddCors();
             builder.Services.AddSwaggerGen(c =>
             {
