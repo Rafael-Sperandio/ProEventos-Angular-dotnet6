@@ -51,7 +51,7 @@ namespace ProEventos.API.Controllers
                     $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
             }
         }
-        [HttpGet("tema/{tema}")]
+        [HttpGet("  /{tema}")]
         public async Task<IActionResult> GetByTema(string tema)
         {
             try

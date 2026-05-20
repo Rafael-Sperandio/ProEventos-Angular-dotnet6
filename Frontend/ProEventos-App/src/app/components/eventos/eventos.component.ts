@@ -1,8 +1,11 @@
-
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { EventoService } from '../services/evento.service';
-import { Evento } from '../models/Evento';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { EventoService } from '../../services/evento.service';
+import { Evento } from '../../models/Evento';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
 
 @Component({
   selector: 'app-eventos',
@@ -11,7 +14,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   //providers: [EventoService]
 })
 export class EventosComponent implements OnInit {
-  public modalRef? : BsModalRef;
+  modalRef?: BsModalRef;
   public eventos: Evento[] = [];
   public eventosFiltrados: Evento[] = [];
   public larguraImagem = 150;
@@ -35,13 +38,21 @@ export class EventosComponent implements OnInit {
     );
   }
 
-  constructor(
-    private eventoService: EventoService,
-    private modalService: BsModalService
+  constructor(private eventoService: EventoService,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) { }
 
   public ngOnInit(): void {
+    this.spinner.show();
+    setTimeout(() => {
+      /** spinner ends after 5 seconds */
+      //this.spinner.hide();
+    }, 5000);
     this.getEventos();
+
+
   }
   public getEventos(): void{
     this.eventoService.getEventos().subscribe({
@@ -49,7 +60,13 @@ export class EventosComponent implements OnInit {
         this.eventos = eventos;
         this.eventosFiltrados = this.eventos;
       },
-      error: (error: any) => console.log(error)
+      error: (error: any) => {
+        this.spinner.hide();
+        this.toastr.error('Erro ao Carregar os Eventos', 'Erro!');
+      },
+      complete: () =>{
+        this.spinner.hide();
+      }
   });
 
   }
@@ -62,12 +79,12 @@ export class EventosComponent implements OnInit {
   }
 
   confirm(): void {
-    this.modalRef.hide();
-    //this.toastr.success('O Evento foi deletado com Sucesso.', 'Deletado!');
+    this.modalRef?.hide();
+    this.toastr.success('O Evento foi deletado com Sucesso.', 'Deletado!');
   }
 
   decline(): void {
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
 }

@@ -1,0 +1,26 @@
+{
+  "local": "São Paulo",
+  "dataEvento": "2026-06-01T20:00:00",
+  "tema": "Tech Conference",
+  "qtdPessoas": 500,
+  "imagemURL": "imagem.jpg",
+  "telefone": "11999999999",
+  "email": "contato@evento.com",
+  "lotes": [
+      {
+        "nome": "1 lote",
+        "preco": 50,
+        "dataInicio": "2026-05-18T18:27:24.892",
+        "dataFim": "2026-05-18T18:27:24.892",
+        "quantidade": 300,
+        "eventoId": 1
+      },
+  ],
+  "redesSociais": [
+    {
+      "nome": "Instagram",
+      "url": "https://instagram.com/techconference"
+    },
+
+  ]
+}
