@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ValidatorField } from '../../../helpers/ValidatorField';
 
 @Component({
   selector: 'app-perfil',
@@ -6,10 +8,43 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./perfil.component.scss']
 })
 export class PerfilComponent implements OnInit {
+  form!: FormGroup;
+  get f(): any {
+    return this.form.controls;
+  }
+  constructor(private fb: FormBuilder) {}
 
-  constructor() { }
+  ngOnInit(): void {
+    this.validation();
+  }
+  private validation(): void {
+    const formOptions: AbstractControlOptions = {
+      validators: ValidatorField.MustMatch('senha', 'confirmeSenha')
+    };
+    this.form =  this.fb.group({
+      titulo: ['', [Validators.required]],
+      primeiroNome: ['', [Validators.required]],
+      ultimoNome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      telefone: ['', [Validators.required]],
+      descricao: ['', [Validators.required]],
+      funcao: ['', [Validators.required]],
+      senha: ['', [Validators.required,Validators.minLength(6)]],
+      confirmeSenha: ['',[ Validators.required]],
+    },formOptions);
+  }
 
-  ngOnInit() {
+  onSubmit(): void {
+
+    // Vai parar aqui se o form estiver inválido
+    if (this.form.invalid) {
+      return;
+    }
+  }
+
+  public resetForm(event: any): void {
+    event.preventDefault();
+    this.form.reset();
   }
 
 }

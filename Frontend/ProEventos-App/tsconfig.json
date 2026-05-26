@@ -2,7 +2,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    //"ignoreDeprecations": "6.0",
     "baseUrl": "./",
+    "rootDir": "./src",//extra para evitar erro
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -19,12 +21,16 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@app/*" : ["src/app/*"],
+      "@environments/*" : ["src/environments/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
+    //"strictInputAccessModifiers": true,
     "strictTemplates": true
   }
 }
