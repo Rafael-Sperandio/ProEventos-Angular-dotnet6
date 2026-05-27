@@ -1,5 +1,6 @@
 # ProEventos-Angular-dotnet6
 projeto com angular e dotnet 6
+Rever AULA 139
 
 ## intalação versões
 npm install -g @angular/cli@12
