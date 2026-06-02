@@ -25,12 +25,14 @@ namespace ProEventos.API
                 );
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IEventoService, EventoService>();
+            builder.Services.AddScoped<ILoteService, LoteService>();
             builder.Services.AddScoped<IGeralPersist, GeralPersist>();
             builder.Services.AddScoped<IEventoPersist, EventoPersist>();
+            builder.Services.AddScoped<ILotePersist, LotePersist>();
             builder.Services.AddCors();
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pokedex.API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
             });
 
             var app = builder.Build();

@@ -24,3 +24,13 @@
 
   ]
 }
+
+{
+  "local": "São Paulo",
+  "dataEvento": "2026-06-01T20:00:00",
+  "tema": "Tech Conference",
+  "qtdPessoas": 1200,
+  "imagemURL": "a.png",
+  "telefone": "11999999999",
+  "email": "user@example.com",
+}

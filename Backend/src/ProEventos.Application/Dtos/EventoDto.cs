@@ -14,6 +14,7 @@ namespace ProEventos.Application.Dtos
          //MaxLength(50, ErrorMessage = "{0} deve ter no máximo 50 caracteres.")
          StringLength(50, MinimumLength = 3,
                           ErrorMessage = "O campo {0} tem Intervalo de 3 a 50 caracteres.")]
+        public string Tema { get; set; }
 
         [Display(Name = "Qtd Pessoas")]
         [Range(1, 120000, ErrorMessage = "{0} não pode ser menor que 1 e maior que 120.000")]
