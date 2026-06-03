@@ -7,6 +7,7 @@ import { EventoService } from '../../../services/evento.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 
 
@@ -79,6 +80,13 @@ export class EventoListaComponent implements OnInit {
     this.exibirImagem = !this.exibirImagem;
   }
 
+  public mostraImagem(imagemURL: string): string {
+    console.log(`${environment.apiURL}resources/images/${imagemURL}`)
+    return (imagemURL !== '')
+      ? `${environment.apiURL}resources/images/${imagemURL}`
+      : 'assets/img/semImagem.jpeg';
+  }
+
   openModal(event: any, template: TemplateRef<any>, eventoId: number): void {
     event.stopPropagation();
     this.eventoId = eventoId;
@@ -111,4 +119,5 @@ export class EventoListaComponent implements OnInit {
   detalheEvento(id: number): void{
     this.router.navigate([`eventos/detalhe/${id}`]);
   }
+
 }
