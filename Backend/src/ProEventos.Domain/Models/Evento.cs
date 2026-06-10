@@ -1,4 +1,6 @@
-﻿namespace ProEventos.Domain.Models
+﻿using ProEventos.Domain.Identity;
+
+namespace ProEventos.Domain.Models
 {
     public class Evento
     {
@@ -13,6 +15,10 @@
         public string Telefone {  get; set; }
 
         public string Email { get; set; }
+
+        public int UserId { get; set; }
+
+        public User User { get; set; }
 
         public IEnumerable<Lote> Lotes { get; set; } = new List<Lote>();
 

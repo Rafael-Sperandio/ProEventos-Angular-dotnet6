@@ -34,3 +34,20 @@
   "telefone": "11999999999",
   "email": "user@example.com",
 }
+
+
+{
+  "userName": "vinicius",
+  "email": "vinicius@vinicius.com",
+  "password": "123456",
+  "primeiroNome": "vinicius",
+  "ultimoNome": "Andrade"
+}
+
+{
+  "userName": "teste",
+  "email": "teste@teste.com",
+  "password": "teste",
+  "primeiroNome": "teste",
+  "ultimoNome": "teste"
+}
