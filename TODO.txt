@@ -1,1 +1,14 @@
+bug de sair e não funcionar mais o login sem refresh da pagina 
+menu de navegação
+rever 241 para ter uma base
+
+em editar perfil o campo senha se faz obrigatório e não deveria ser
+
+nome de imagem para cadastro de evento é obrigatoria
+
 fazer aula 139 mapeamento de banco
+
+
+bug de navegação verificar se token invalido ainda funciona 
+e se redireciona para o lugar certo
+aula 240  ou 236

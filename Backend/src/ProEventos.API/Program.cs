@@ -129,13 +129,12 @@ namespace ProEventos.API
 
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-
             app.UseCors(cors => cors.AllowAnyHeader()
             .AllowAnyMethod()
             .AllowAnyOrigin());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
             
             app.UseStaticFiles(new StaticFileOptions()
             {
