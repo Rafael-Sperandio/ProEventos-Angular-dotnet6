@@ -12,3 +12,11 @@ fazer aula 139 mapeamento de banco
 bug de navegação verificar se token invalido ainda funciona 
 e se redireciona para o lugar certo
 aula 240  ou 236
+
+em EventoService não é usado automaper
+	GetAllEventosAsync
+ 	var pageDto = new PageList<EventoDto>
+
+em evento-lista.component
+  public pageChanged(event: any): void {
+    const pageEvent = event as PageChangedEvent;//TODO casting não é o ideal

@@ -2,14 +2,15 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Evento } from '@app/models/Evento';
 
-//import { EventoService } from '@app/services/evento.service';
 import { EventoService } from '../../../services/evento.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-
-
+import { PaginatedResult, Pagination } from '../../../models/Pagination';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-evento-lista',
@@ -19,28 +20,41 @@ import { environment } from '../../../../environments/environment';
 })
 export class EventoListaComponent implements OnInit {
   public eventoId = 0;
+  public pagination = {} as Pagination;
   modalRef?: BsModalRef;
   public eventos: Evento[] = [];
-  public eventosFiltrados: Evento[] = [];
+
   public larguraImagem = 150;
   public margemImagem = 2;
   public exibirImagem = true;
-  private filtroListado = '';
 
-  public get filtroLista(): string {
-    return this.filtroListado;
-  }
-
-  public set filtroLista(value: string) {
-    this.filtroListado = value;
-    this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
-  }
-  public filtrarEventos(filtrarPor: string): Evento[]  {
-    filtrarPor = filtrarPor.toLowerCase();
-    return this.eventos.filter(
-      (evento: { tema: string; local: string; }) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
-      evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
-    );
+  termoBuscaChanged: Subject<string> = new Subject<string>();
+  public filtrarEventos(evt: any): void {
+    if (this.termoBuscaChanged.observers.length === 0) {
+      this.termoBuscaChanged
+        .pipe(debounceTime(1500))
+        .subscribe((filtrarPor) => {
+          this.spinner.show();
+          this.eventoService
+            .getEventos(
+              this.pagination.currentPage,
+              this.pagination.itemsPerPage,
+              filtrarPor
+            )
+            .subscribe(
+              (paginatedResult: PaginatedResult<Evento[]>) => {
+                this.eventos = paginatedResult.result;
+                this.pagination = paginatedResult.pagination;
+              },
+              (error: any) => {
+                this.spinner.hide();
+                this.toastr.error('Erro ao Carregar os Eventos', 'Erro!');
+              }
+            )
+            .add(() => this.spinner.hide());
+        });
+    }
+    this.termoBuscaChanged.next(evt.value);
   }
 
   constructor(private eventoService: EventoService,
@@ -52,28 +66,33 @@ export class EventoListaComponent implements OnInit {
 
   public ngOnInit(): void {
     this.spinner.show();
-    setTimeout(() => {
-      /* spinner ends after 5 seconds */
-      //this.spinner.hide();
-    }, 5000);
+    this.pagination = {
+      currentPage: 1,
+      itemsPerPage: 3,
+      totalItems: 1,
+    } as Pagination;
+    // setTimeout(() => {
+    //   /* spinner ends after 5 seconds */
+    //   this.spinner.hide();
+    // }, 5000);
     this.carregarEventos();
 
 
   }
   public carregarEventos(): void{
-    this.eventoService.getEventos().subscribe({
-      next: (eventos: Evento[]) => {
-        this.eventos = eventos;
-        this.eventosFiltrados = this.eventos;
+    this.spinner.show();
+    this.eventoService
+      .getEventos(this.pagination.currentPage, this.pagination.itemsPerPage)
+      .subscribe({
+      next: (paginatedResult: PaginatedResult<Evento[]>) => {
+          this.eventos = paginatedResult.result;
+          this.pagination = paginatedResult.pagination;
       },
       error: (error: any) => {
         this.spinner.hide();
         this.toastr.error('Erro ao Carregar os Eventos', 'Erro!');
       },
-      complete: () =>{
-        this.spinner.hide();
-      }
-  });
+  }).add(()=> {  this.spinner.hide();});
 
   }
   public alterarImagem(): void{
@@ -91,6 +110,14 @@ export class EventoListaComponent implements OnInit {
     event.stopPropagation();
     this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+
+  public pageChanged(event: any): void {
+    const pageEvent = event as PageChangedEvent;//TODO casting não é o ideal
+    if(pageEvent && pageEvent.page){
+      this.pagination.currentPage = pageEvent.page;
+      this.carregarEventos();
+    }
   }
 
   confirm(): void {

@@ -1,25 +1,42 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable , Pipe } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from '../models/Evento';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { PaginatedResult } from '../models/Pagination';
 @Injectable(
 //{  providedIn: 'root'}
 )
 export class EventoService {
   baseURL = environment.apiURL + 'api/eventos';
-//tokenHeader = new HttpHeaders({'Authorization':`Bearer ${localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') ?? '').token : ""}`});
   constructor(private http:HttpClient) { }
-//(this.baseURL,{headers: this.tokenHeader})
-  public getEventos(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(this.baseURL)
-      .pipe(take(1));
+
+  public getEventos(page?: number, itemsPerPage?: number, term?: string): Observable<PaginatedResult<Evento[]>> {
+    const paginatedResult: PaginatedResult<Evento[]> = new PaginatedResult<Evento[]>();
+    let params = new HttpParams;
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page.toString());
+      params = params.append('pageSize', itemsPerPage.toString());
+    }
+    if (term != null && term != '')
+      params = params.append('term', term)
+//PaginatedResult
+    return this.http
+      .get<Evento[]>(this.baseURL, {observe: 'response', params })
+      .pipe(take(1),
+      map((response) => {
+          if(response.body){
+            paginatedResult.result = response.body;
+            if(response.headers.has('Pagination')) {
+              paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')?? "");
+            }
+          }
+          return paginatedResult;
+        })
+      );
   }
-  public getEventosByTema(tema: string): Observable<Evento[]> {
-    return this.http.get<Evento[]>(`${this.baseURL}/tema/${tema}`)
-      .pipe(take(1));
-  }
+
   public getEventoById(id:number): Observable<Evento> {
     return this.http.get<Evento>(`${this.baseURL}/${id}`)
     .pipe(take(1));

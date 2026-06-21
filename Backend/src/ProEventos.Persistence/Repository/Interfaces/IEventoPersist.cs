@@ -1,4 +1,5 @@
 ﻿using ProEventos.Domain.Models;
+using ProEventos.Persistence.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,7 @@ namespace ProEventos.Persistence.Repository.Interfaces
 {
     public interface IEventoPersist
     {
-        Task<Evento[]> GetAllEventosByTemaAsync(int userId,string tema, bool includePalestrantes = false);
-        Task<Evento[]> GetAllEventosAsync(int userId,bool includePalestrantes = false);
+        Task<PageList<Evento>> GetAllEventosAsync(int userId, PageParams pageParams, bool includePalestrantes = false);
         Task<Evento> GetEventoByIdAsync(int userId,int eventoId, bool includePalestrantes = false);
     }
 }
