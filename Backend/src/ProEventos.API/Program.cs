@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProEventos.API.Helpers;
 using ProEventos.Application.Services;
 using ProEventos.Application.Services.Interfaces;
 using ProEventos.Domain.Identity;
@@ -74,11 +75,16 @@ namespace ProEventos.API
             builder.Services.AddScoped<ILoteService, LoteService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<IPalestranteService, PalestranteService>();
+            builder.Services.AddScoped<IRedeSocialService, RedeSocialService>();
+            builder.Services.AddScoped<IUtil, Util>();
 
             builder.Services.AddScoped<IGeralPersist, GeralPersist>();
             builder.Services.AddScoped<IEventoPersist, EventoPersist>();
             builder.Services.AddScoped<ILotePersist, LotePersist>(); 
             builder.Services.AddScoped<IUserPersist, UserPersist>();
+            builder.Services.AddScoped<IPalestrantePersist, PalestrantePersist>();
+            builder.Services.AddScoped<IRedeSocialPersist, RedeSocialPersist>();
 
             builder.Services.AddCors();
             builder.Services.AddSwaggerGen(options =>

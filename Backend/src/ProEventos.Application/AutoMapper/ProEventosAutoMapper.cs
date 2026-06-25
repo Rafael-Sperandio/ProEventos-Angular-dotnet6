@@ -18,6 +18,9 @@ namespace ProEventos.Application.AutoMapper
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<User, UserLoginDto>().ReverseMap();
             CreateMap<User, UserUpdateDto>().ReverseMap();
+
+            CreateMap<Palestrante, PalestranteAddDto>().ReverseMap();
+            CreateMap<Palestrante, PalestranteUpdateDto>().ReverseMap();
         }
     }
 }
